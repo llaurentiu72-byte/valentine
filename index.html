@@ -1,129 +1,103 @@
 <!doctype html>
 <html lang="ro">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pentru NUME_EA 💙</title>
-  <style>
-    :root{
-      --bg1:#ff7eb3;
-      --bg2:#65c7f7;
-      --card:#ffffff;
-      --text:#222;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      overflow:hidden;
-      padding:24px;
-    }
-    .card{
-      width:min(560px, 100%);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 22px;
-      padding: 28px 22px;
-      box-shadow: 0 18px 40px rgba(0,0,0,.22);
-      text-align:center;
-      position:relative;
-      z-index:2;
-    }
-    h1{margin:6px 0 10px;font-size: clamp(22px, 4vw, 34px);}
-    p{margin:8px 0 18px; font-size: 16px; line-height:1.4; color:#444;}
-    .btns{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
-    button{
-      border:0;
-      border-radius:14px;
-      padding:14px 22px;
-      font-size: 18px;
-      cursor:pointer;
-      transition: transform .08s ease;
-      user-select:none;
-    }
-    button:active{transform: scale(.98)}
-    .yes{background:#20b26b; color:white;}
-    .no{background:#ff4d4d; color:white; position:relative;}
-    .small{font-size:13px;color:#666;margin-top:10px}
-    .hide{display:none}
-    .list{
-      text-align:left;
-      margin:16px auto 0;
-      width:min(420px,100%);
-      background:#f6f7fb;
-      border-radius:16px;
-      padding:14px 16px;
-      color:#333;
-    }
-    .list li{margin:8px 0}
-    /* hearts */
-    .heart{
-      position:fixed;
-      top:-20px;
-      font-size:18px;
-      opacity:.9;
-      animation: fall linear forwards;
-      z-index:1;
-      pointer-events:none;
-    }
-    @keyframes fall{
-      to{ transform: translateY(110vh) rotate(360deg); opacity:.2; }
-    }
-    .badge{
-      display:inline-block;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#eef7ff;
-      color:#1b4b72;
-      font-weight:600;
-      font-size:13px;
-      margin-bottom:10px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pentru Cris 💙</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
+  background:linear-gradient(135deg,#ff7eb3,#65c7f7);
+  overflow:hidden;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.25);
+  text-align:center;
+  max-width:520px;
+}
+
+button{
+  padding:15px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  margin:10px;
+  cursor:pointer;
+}
+
+.yes{background:#20b26b;color:white;}
+.no{background:#ff4d4d;color:white;position:fixed;}
+
+.hide{display:none}
+
+.heart{
+  position:fixed;
+  top:-20px;
+  font-size:22px;
+  animation:fall linear forwards;
+}
+@keyframes fall{to{transform:translateY(110vh);opacity:.2}}
+</style>
 </head>
+
 <body>
 
-  <div class="card" id="q">
-    <div class="badge">Mesaj secret pentru NUME_EA 💙</div>
-    <h1>Vrei să fii Valentine-ul meu? 🥰</h1>
-    <p>Promit: pupici nelimitați, râsete, și să te supăr doar puțin… ca să te împac imediat 😄</p>
+<div class="card" id="q">
+<h1>Cris 💙 vrei să fii Valentine-ul meu? 🥰</h1>
+<p>Promit pupici nelimitați și nervi doar ocazional 😄</p>
 
-    <div class="btns">
-      <button class="yes" id="yesBtn">DA 💙</button>
-      <button class="no" id="noBtn">NU 🙄</button>
-    </div>
+<button class="yes" onclick="yes()">DA 💙</button>
+<button class="no" id="noBtn">NU 🙄</button>
+</div>
 
-    <div class="small">*Atenție: butonul „NU” are tendința să dispară din motive… romantice 😏</div>
-  </div>
+<div class="card hide" id="final">
+<h1>Știam că o să spui DA 🥰</h1>
+<h2>Te iubesc Cris 💙</h2>
 
-  <div class="card hide" id="final">
-    <div class="badge">Confirmare oficială ✅</div>
-    <h1>Yaaaay! Știam că o să spui DA! 🎉</h1>
-    <p>NUME_EA, ești Valentine-ul meu și cea mai frumoasă întâmplare din viața mea. 💙</p>
+<p>
+• râsul tău<br>
+• cum mă faci fericit<br>
+• că ești „acasă” pentru mine
+</p>
 
-    <div class="list">
-      <b>De ce te iubesc (pe scurt):</b>
-      <ul>
-        <li>felul în care mă liniștești doar cu o privire</li>
-        <li>cum râzi (și cum mă faci să râd)</li>
-        <li>că ești „acasă” pentru mine</li>
-      </ul>
-    </div>
-
-    <p style="margin-top:16px;"><b>Cu drag, NUME_TAU 💙</b></p>
-  </div>
+<h3>Cu drag, Lau 💙</h3>
+</div>
 
 <script>
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn  = document.getElementById("noBtn");
-  const q      = document.getElementById("q");
-  const fin    = document.getElementById("final");
+function dropHearts(n=30){
+ for(let i=0;i<n;i++){
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💙";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=2+Math.random()*3+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+ }
+}
 
-  // hearts generator
-  function dropHearts(count=25){
-    const emojis = ["💙","]()
+function yes(){
+ document.getElementById("q").classList.add("hide");
+ document.getElementById("final").classList.remove("hide");
+ dropHearts(40);
+}
+
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+ noBtn.style.left=Math.random()*90+"vw";
+ noBtn.style.top=Math.random()*90+"vh";
+});
+</script>
+
+</body>
+</html>
