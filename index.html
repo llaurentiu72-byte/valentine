@@ -1,36 +1,401 @@
 <!doctype html>
 <html lang="ro">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pentru Cris 💙</title>
-  <style>
-    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial;background:linear-gradient(135deg,#ff7eb3,#65c7f7);padding:20px}
-    .card{background:#fff;padding:26px 20px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.25);text-align:center;width:min(520px,100%)}
-    button{padding:14px 20px;font-size:18px;border:0;border-radius:12px;margin:10px;cursor:pointer}
-    .yes{background:#20b26b;color:#fff}
-    .no{background:#ff4d4d;color:#fff}
-    .hide{display:none}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pentru Cris 💙</title>
+
+<style>
+  :root{
+    --bg1:#ff7eb3;
+    --bg2:#65c7f7;
+    --ink:#111827;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --shadow:0 18px 45px rgba(0,0,0,.25);
+    --r:22px;
+  }
+  body{
+    margin:0; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    overflow:hidden;
+    padding:20px;
+  }
+  .card{
+    background:var(--card);
+    padding:28px 22px;
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    text-align:center;
+    width:min(620px, 100%);
+    position:relative;
+    z-index:2;
+  }
+  h1{margin:8px 0 10px; font-size:clamp(22px,4vw,34px); color:var(--ink);}
+  p{margin:8px 0 14px; color:#444; line-height:1.45;}
+  .badge{
+    display:inline-block;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#eef7ff;
+    color:#1b4b72;
+    font-weight:900;
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .btns{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+  button{
+    padding:14px 22px; font-size:18px;
+    border:none; border-radius:14px;
+    cursor:pointer;
+    transition: transform .08s ease, opacity .2s ease;
+    user-select:none;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  }
+  button:active{transform:scale(.98)}
+  .yes{background:#20b26b;color:#fff;}
+  .no{background:#ff4d4d;color:#fff;}
+  .secondary{background:#111827;color:#fff;}
+  .wa{background:#25D366;color:#fff;}
+  .hide{display:none}
+  .small{font-size:13px; color:var(--muted); margin-top:10px;}
+  .type{font-weight:900;color:#111827;}
+  .box{
+    text-align:left;
+    margin:14px auto 0;
+    width:min(520px,100%);
+    background:#f6f7fb;
+    border-radius:16px;
+    padding:14px 16px;
+    color:#333;
+  }
+  .box li{margin:8px 0}
+  .musicbar{
+    margin:14px auto 0;
+    width:min(520px,100%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#0f172a0f;
+    border-radius:14px;
+    padding:10px 12px;
+  }
+  .musicbar b{font-size:14px;color:var(--ink)}
+  .musicbar button{
+    padding:10px 14px;
+    font-size:14px;
+    border-radius:12px;
+    background:var(--ink);
+    color:white;
+  }
+  .musicbar input[type="range"]{width:150px}
+  .row{
+    display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+    margin-top:16px;
+  }
+  .hint{
+    background:#fff7ed;
+    color:#9a3412;
+    border-radius:14px;
+    padding:10px 12px;
+    font-size:13px;
+    width:min(520px,100%);
+    margin:12px auto 0;
+  }
+
+  /* falling emojis */
+  .float{
+    position:fixed; top:-28px; left:0;
+    animation: fall linear forwards;
+    pointer-events:none;
+    z-index:1;
+    opacity:.95;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+    will-change: transform, opacity;
+  }
+  @keyframes fall{
+    to{ transform: translateY(112vh) rotate(420deg); opacity:.2; }
+  }
+</style>
 </head>
+
 <body>
-  <div class="card" id="q">
-    <h1>Cris 💙 vrei să fii Valentine-ul meu? 🥰</h1>
-    <p>Test: dacă vezi asta, site-ul merge ✅</p>
-    <button class="yes" onclick="yes()">DA 💙</button>
-    <button class="no" onclick="alert('NU nu există 😄')">NU 🙄</button>
+
+<!-- 🎵 Real MP3 audio (upload song.mp3 in repo root) -->
+<audio id="music" preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="q">
+  <div class="badge">Mesaj secret pentru Cris 💙</div>
+  <h1>Cris, vrei să fii Valentine-ul meu? 🥰</h1>
+  <p id="secret" class="type"></p>
+  <p>Promit: pupici nelimitați, îmbrățișări și să te supăr doar puțin… ca să te împac imediat 😄</p>
+
+  <div class="btns">
+    <button class="yes" id="yesBtn">DA 💙</button>
+    <button class="no" id="noBtn">NU 🙄</button>
   </div>
 
-  <div class="card hide" id="f">
-    <h1>Știam că o să spui DA 🥰</h1>
-    <p>Cu drag, Lau 💙</p>
+  <div class="small" id="noHint">*Butonul „NU” îți pregătește o surpriză 😏</div>
+</div>
+
+<div class="card hide" id="final">
+  <div class="badge">Confirmare oficială ✅</div>
+  <h1>Yaaaay! Știam că o să spui DA! 🎉</h1>
+  <p><b>Cris</b>, ești Valentine-ul meu și cea mai frumoasă întâmplare din viața mea. 💙</p>
+
+  <p style="margin:10px 0 0; font-weight:900; color:var(--ink);">
+    This song is for you 💙
+  </p>
+  <p style="margin:6px 0 0; color:var(--muted); font-size:14px;">
+    (song.mp3)
+  </p>
+
+  <div class="musicbar">
+    <b>Muzică</b>
+    <button id="toggleMusic">⏸️ Pauză</button>
+    <label style="font-size:13px;color:#374151;">
+      Volum
+      <input id="vol" type="range" min="0" max="100" value="70">
+    </label>
   </div>
 
-  <script>
-    function yes(){
-      document.getElementById('q').classList.add('hide');
-      document.getElementById('f').classList.remove('hide');
+  <div class="box">
+    <b>3 motive (deși sunt mai multe):</b>
+    <ul>
+      <li>râsul tău – îmi schimbă ziua instant</li>
+      <li>cum mă liniștești doar cu o privire</li>
+      <li>că lângă tine mă simt „acasă”</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:14px;">
+    <b>Cu drag, Lau 💙</b><br>
+    <span style="color:var(--muted);">Acum ai voie să dai share… dar doar ca să se oftice lumea 😄</span>
+  </p>
+
+  <div class="row">
+    <button class="wa" id="waBtn">💬 Trimite pe WhatsApp</button>
+    <button class="secondary" id="copyBtn">🔗 Copiază link</button>
+    <button class="secondary" id="shareBtn">📲 Share</button>
+    <button class="secondary" id="replayBtn">🔁 Replay</button>
+  </div>
+
+  <p id="copiedMsg" class="hide" style="color:#16a34a;font-weight:900;margin-top:12px">
+    Link copiat 💙
+  </p>
+
+  <div class="hint" id="shareHint">
+    Tip: dacă nu merge „Share”, folosește WhatsApp sau „Copiază link”.
+  </div>
+</div>
+
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn  = document.getElementById("noBtn");
+  const q      = document.getElementById("q");
+  const fin    = document.getElementById("final");
+  const noHint = document.getElementById("noHint");
+
+  // ---------- Effects ----------
+  function sprinkle(count=45){
+    const emojis = ["💙","💖","💕","❤️","💘","✨","🥰","😍","💫","🌙"];
+    for(let i=0;i<count;i++){
+      const e = document.createElement("div");
+      e.className="float";
+      e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      e.style.left = (Math.random()*100) + "vw";
+      e.style.fontSize = (16 + Math.random()*24) + "px";
+      e.style.animationDuration = (2.0 + Math.random()*3.2) + "s";
+      document.body.appendChild(e);
+      setTimeout(()=>e.remove(), 6500);
     }
-  </script>
+  }
+
+  // Typewriter secret
+  const secretText = "P.S. Dacă apeși „DA”, primești pupici nelimitați 💙";
+  const secretEl = document.getElementById("secret");
+  let i = 0;
+  setTimeout(()=>{
+    const t = setInterval(()=>{
+      secretEl.textContent += secretText[i] || "";
+      i++;
+      if(i>secretText.length) clearInterval(t);
+    }, 30);
+  }, 650);
+
+  // ---------- NO button panic ----------
+  let noScale = 1;
+  let noCount = 0;
+  const noTexts = [
+    "NU 🙄", "Sigur? 😳", "Chiar NU? 🥺", "Cris pls 😭",
+    "Hai măăă 😅", "Ultima șansă 😤", "Bine… dar tot te iubesc 💙"
+  ];
+
+  function moveNo(){
+    const pad = 12;
+    const maxX = window.innerWidth - noBtn.offsetWidth - pad;
+    const maxY = window.innerHeight - noBtn.offsetHeight - pad;
+    const x = Math.max(pad, Math.random()*maxX);
+    const y = Math.max(pad, Math.random()*maxY);
+    noBtn.style.position="fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  function scareNo(){
+    noCount++;
+    moveNo();
+    noScale = Math.max(0.52, noScale - 0.085);
+    noBtn.style.transform = `scale(${noScale})`;
+    noBtn.textContent = noTexts[Math.min(noCount, noTexts.length-1)];
+    noHint.textContent = "Nu te lasă să spui NU 😄";
+    sprinkle(10);
+    if(navigator.vibrate) navigator.vibrate([35,25,35]);
+  }
+
+  noBtn.addEventListener("mouseenter", scareNo);
+  noBtn.addEventListener("click", scareNo);
+
+  // ---------- MUSIC (MP3) ----------
+  const music = document.getElementById("music");
+  let musicOn = false;
+
+  function startMusic(){
+    music.volume = 0.70;
+    const p = music.play();
+    if (p && typeof p.then === "function") p.catch(()=>{});
+    musicOn = true;
+  }
+  function stopMusic(){
+    music.pause();
+    musicOn = false;
+  }
+
+  // ---------- Share helpers ----------
+  function pageLink(){
+    return window.location.href;
+  }
+
+  function waText(){
+    return "Uite ce am primit 🥹💙 " + pageLink();
+  }
+
+  function showCopied(){
+    const m = document.getElementById("copiedMsg");
+    m.classList.remove("hide");
+    setTimeout(()=>m.classList.add("hide"), 2200);
+  }
+
+  async function copyLink(){
+    try{
+      await navigator.clipboard.writeText(pageLink());
+      showCopied();
+      sprinkle(12);
+    }catch(e){
+      // fallback
+      prompt("Copiază linkul:", pageLink());
+    }
+  }
+
+  function shareWhatsApp(){
+    const url = "https://wa.me/?text=" + encodeURIComponent(waText());
+    window.open(url, "_blank");
+    sprinkle(14);
+  }
+
+  async function shareNative(){
+    const hint = document.getElementById("shareHint");
+    if(navigator.share){
+      try{
+        await navigator.share({
+          title: "Pentru Cris 💙",
+          text: "Cris, am ceva pentru tine 💙",
+          url: pageLink()
+        });
+        sprinkle(16);
+        return;
+      }catch(e){
+        // user canceled - ignore
+      }
+    }
+    hint.textContent = "Browserul tău nu suportă Share. Folosește WhatsApp sau Copiază link 🙂";
+  }
+
+  function replay(){
+    // reset buttons + state
+    fin.classList.add("hide");
+    q.classList.remove("hide");
+
+    // reset NO
+    noBtn.style.position = "";
+    noBtn.style.left = "";
+    noBtn.style.top = "";
+    noBtn.style.transform = "";
+    noBtn.textContent = "NU 🙄";
+    noScale = 1;
+    noCount = 0;
+    noHint.textContent = "*Butonul „NU” îți pregătește o surpriză 😏";
+
+    // reset secret message
+    secretEl.textContent = "";
+    i = 0;
+    setTimeout(()=>{
+      const t = setInterval(()=>{
+        secretEl.textContent += secretText[i] || "";
+        i++;
+        if(i>secretText.length) clearInterval(t);
+      }, 30);
+    }, 450);
+
+    // stop music
+    stopMusic();
+    sprinkle(18);
+    window.scrollTo(0,0);
+  }
+
+  // ---------- YES click ----------
+  yesBtn.addEventListener("click", ()=>{
+    q.classList.add("hide");
+    fin.classList.remove("hide");
+    sprinkle(80);
+    startMusic();
+    if(navigator.vibrate) navigator.vibrate([60,40,60,40,120]);
+
+    // bind controls
+    const toggle = document.getElementById("toggleMusic");
+    const vol = document.getElementById("vol");
+    const waBtn = document.getElementById("waBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const shareBtn = document.getElementById("shareBtn");
+    const replayBtn = document.getElementById("replayBtn");
+
+    toggle.textContent = "⏸️ Pauză";
+    vol.value = Math.round(music.volume * 100);
+
+    toggle.onclick = ()=>{
+      if(musicOn){
+        stopMusic();
+        toggle.textContent = "▶️ Play";
+      }else{
+        startMusic();
+        toggle.textContent = "⏸️ Pauză";
+      }
+    };
+    vol.oninput = ()=>{ music.volume = Number(vol.value)/100; };
+
+    waBtn.onclick = shareWhatsApp;
+    copyBtn.onclick = copyLink;
+    shareBtn.onclick = shareNative;
+    replayBtn.onclick = replay;
+  });
+
+  // gentle background sparkle
+  setInterval(()=>sprinkle(3), 2400);
+</script>
 </body>
 </html>
