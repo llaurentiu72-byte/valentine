@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Un mesaj pentru tine 💙</title>
+
+<style>
+body{
+    background: linear-gradient(135deg,#ff7eb3,#65c7f7);
+    font-family: Arial;
+    text-align:center;
+    color:white;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    background:white;
+    color:#333;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+button{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    margin:10px;
+    cursor:pointer;
+}
+
+.yes{background:#4CAF50;color:white;}
+.no{background:#ff4d4d;color:white;}
+
+#final{display:none;}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="question">
+    <h1>Vrei să fii Valentine-ul meu? 💙</h1>
+    <button class="yes" onclick="yes()">DA</button>
+    <button class="no" onclick="no()">NU</button>
+</div>
+
+<div class="card" id="final">
+    <h1>Știam că o să spui DA 🥰</h1>
+    <h2>Te iubesc ❤️</h2>
+</div>
+
+<script>
+function yes(){
+    document.getElementById("question").style.display="none";
+    document.getElementById("final").style.display="block";
+}
+
+function no(){
+    alert("Nu ai voie să apeși NU 😄");
+}
+</script>
+
+</body>
+</html>
