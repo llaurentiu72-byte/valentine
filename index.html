@@ -1,36 +1,280 @@
 <!doctype html>
 <html lang="ro">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pentru Cris 💙</title>
-  <style>
-    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial;background:linear-gradient(135deg,#ff7eb3,#65c7f7);padding:20px}
-    .card{background:#fff;padding:26px 20px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.25);text-align:center;width:min(520px,100%)}
-    button{padding:14px 20px;font-size:18px;border:0;border-radius:12px;margin:10px;cursor:pointer}
-    .yes{background:#20b26b;color:#fff}
-    .no{background:#ff4d4d;color:#fff}
-    .hide{display:none}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pentru Cris 💙</title>
+
+<style>
+  body{
+    margin:0; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background:linear-gradient(135deg,#ff7eb3,#65c7f7);
+    overflow:hidden;
+    padding:20px;
+  }
+  .card{
+    background:#fff;
+    padding:28px 22px;
+    border-radius:22px;
+    box-shadow:0 18px 45px rgba(0,0,0,.25);
+    text-align:center;
+    width:min(580px, 100%);
+    position:relative;
+    z-index:2;
+  }
+  h1{margin:8px 0 10px; font-size:clamp(22px,4vw,34px);}
+  p{margin:8px 0 14px; color:#444; line-height:1.45;}
+  .badge{
+    display:inline-block;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#eef7ff;
+    color:#1b4b72;
+    font-weight:800;
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .btns{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+  button{
+    padding:14px 22px; font-size:18px;
+    border:none; border-radius:14px;
+    cursor:pointer;
+    transition: transform .08s ease, opacity .2s ease;
+    user-select:none;
+  }
+  button:active{transform:scale(.98)}
+  .yes{background:#20b26b;color:#fff;}
+  .no{background:#ff4d4d;color:#fff;}
+  .hide{display:none}
+  .small{font-size:13px; color:#666; margin-top:10px;}
+  .type{font-weight:800;color:#222;}
+  .box{
+    text-align:left;
+    margin:14px auto 0;
+    width:min(480px,100%);
+    background:#f6f7fb;
+    border-radius:16px;
+    padding:14px 16px;
+    color:#333;
+  }
+  .box li{margin:8px 0}
+
+  .musicbar{
+    margin:14px auto 0;
+    width:min(480px,100%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#0f172a0f;
+    border-radius:14px;
+    padding:10px 12px;
+  }
+  .musicbar b{font-size:14px;color:#111827}
+  .musicbar button{
+    padding:10px 14px;
+    font-size:14px;
+    border-radius:12px;
+    background:#111827;
+    color:white;
+  }
+  .musicbar input[type="range"]{width:140px}
+
+  /* falling emojis */
+  .float{
+    position:fixed; top:-24px; left:0;
+    animation: fall linear forwards;
+    pointer-events:none;
+    z-index:1;
+    opacity:.95;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+  }
+  @keyframes fall{
+    to{ transform: translateY(112vh) rotate(360deg); opacity:.25; }
+  }
+</style>
 </head>
+
 <body>
-  <div class="card" id="q">
-    <h1>Cris 💙 vrei să fii Valentine-ul meu? 🥰</h1>
-    <p>Test: dacă vezi asta, site-ul merge ✅</p>
-    <button class="yes" onclick="yes()">DA 💙</button>
-    <button class="no" onclick="alert('NU nu există 😄')">NU 🙄</button>
+
+<!-- Hidden YouTube player (The Weeknd - Die For You) -->
+<iframe
+  id="ytplayer"
+  width="0" height="0"
+  src="https://www.youtube.com/embed/2zToEPpFEN8?enablejsapi=1&origin=https://github.com"
+  title="The Weeknd - Die For You"
+  frameborder="0"
+  allow="autoplay"
+  allowfullscreen>
+</iframe>
+
+<div class="card" id="q">
+  <div class="badge">Mesaj secret pentru Cris 💙</div>
+  <h1>Cris, vrei să fii Valentine-ul meu? 🥰</h1>
+  <p id="secret" class="type"></p>
+  <p>Promit: pupici nelimitați, îmbrățișări și să te supăr doar puțin… ca să te împac imediat 😄</p>
+
+  <div class="btns">
+    <button class="yes" id="yesBtn">DA 💙</button>
+    <button class="no" id="noBtn">NU 🙄</button>
   </div>
 
-  <div class="card hide" id="f">
-    <h1>Știam că o să spui DA 🥰</h1>
-    <p>Cu drag, Lau 💙</p>
+  <div class="small" id="noHint">*Butonul „NU” îți pregătește o surpriză 😏</div>
+</div>
+
+<div class="card hide" id="final">
+  <div class="badge">Confirmare oficială ✅</div>
+  <h1>Yaaaay! Știam că o să spui DA! 🎉</h1>
+  <p><b>Cris</b>, ești Valentine-ul meu și cea mai frumoasă întâmplare din viața mea. 💙</p>
+
+  <p style="margin:10px 0 0; font-weight:800;">
+    This song is for you 💙
+  </p>
+  <p style="margin:6px 0 0; color:#6b7280; font-size:14px;">
+    The Weeknd – Die For You
+  </p>
+
+  <div class="musicbar">
+    <b>Muzică</b>
+    <button id="toggleMusic">⏸️ Pauză</button>
+    <label style="font-size:13px;color:#374151;">
+      Volum
+      <input id="vol" type="range" min="0" max="100" value="65">
+    </label>
   </div>
 
-  <script>
-    function yes(){
-      document.getElementById('q').classList.add('hide');
-      document.getElementById('f').classList.remove('hide');
+  <div class="box">
+    <b>3 motive (deși sunt mai multe):</b>
+    <ul>
+      <li>râsul tău – îmi schimbă ziua instant</li>
+      <li>cum mă liniștești doar cu o privire</li>
+      <li>că lângă tine mă simt „acasă”</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:14px;">
+    <b>Cu drag, Lau 💙</b><br>
+    <span style="color:#6b7280;">(și da… ai voie să dai share la prietene ca să se oftice 😄)</span>
+  </p>
+</div>
+
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn  = document.getElementById("noBtn");
+  const q      = document.getElementById("q");
+  const fin    = document.getElementById("final");
+  const noHint = document.getElementById("noHint");
+
+  // Typewriter secret message
+  const secretText = "P.S. Dacă apeși „DA”, primești pupici nelimitați 💙";
+  const secretEl = document.getElementById("secret");
+  let i = 0;
+  setTimeout(()=>{
+    const t = setInterval(()=>{
+      secretEl.textContent += secretText[i] || "";
+      i++;
+      if(i>secretText.length) clearInterval(t);
+    }, 32);
+  }, 650);
+
+  function sprinkle(count=40){
+    const emojis = ["💙","💖","💕","❤️","💘","✨","🥰","😍","💫"];
+    for(let i=0;i<count;i++){
+      const e = document.createElement("div");
+      e.className="float";
+      e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      e.style.left = (Math.random()*100) + "vw";
+      e.style.fontSize = (16 + Math.random()*22) + "px";
+      e.style.animationDuration = (2.0 + Math.random()*3.0) + "s";
+      document.body.appendChild(e);
+      setTimeout(()=>e.remove(), 6500);
     }
-  </script>
+  }
+
+  // NO button panic mode
+  let noScale = 1;
+  let noCount = 0;
+  const noTexts = [
+    "NU 🙄", "Sigur? 😳", "Chiar NU? 🥺", "Cris pls 😭",
+    "Hai măăă 😅", "Ultima șansă 😤", "Bine… dar tot te iubesc 💙"
+  ];
+
+  function moveNo(){
+    const pad = 12;
+    const maxX = window.innerWidth - noBtn.offsetWidth - pad;
+    const maxY = window.innerHeight - noBtn.offsetHeight - pad;
+    const x = Math.max(pad, Math.random()*maxX);
+    const y = Math.max(pad, Math.random()*maxY);
+    noBtn.style.position="fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  function scareNo(){
+    noCount++;
+    moveNo();
+    noScale = Math.max(0.55, noScale - 0.08);
+    noBtn.style.transform = `scale(${noScale})`;
+    noBtn.textContent = noTexts[Math.min(noCount, noTexts.length-1)];
+    noHint.textContent = "Nu te lasă să spui NU 😄";
+    sprinkle(10);
+    if(navigator.vibrate) navigator.vibrate([35,25,35]);
+  }
+
+  noBtn.addEventListener("mouseenter", scareNo);
+  noBtn.addEventListener("click", scareNo);
+
+  // --- YouTube control (simple, via src reload) ---
+  // Browsers block autoplay with sound until user gesture (click). We'll start music on YES.
+  let musicOn = true;
+  const yt = document.getElementById("ytplayer");
+  const toggleBtn = () => document.getElementById("toggleMusic");
+
+  function startMusic(){
+    // reload iframe with autoplay after user click
+    const base = "https://www.youtube.com/embed/2zToEPpFEN8?enablejsapi=1";
+    yt.src = base + "&autoplay=1&mute=0";
+    musicOn = true;
+  }
+
+  function stopMusic(){
+    // stop by unloading video
+    yt.src = "about:blank";
+    musicOn = false;
+  }
+
+  yesBtn.addEventListener("click", ()=>{
+    q.classList.add("hide");
+    fin.classList.remove("hide");
+    sprinkle(70);
+    startMusic();
+    if(navigator.vibrate) navigator.vibrate([60,40,60,40,120]);
+
+    // hook up controls now that final is visible
+    const btn = toggleBtn();
+    btn.addEventListener("click", ()=>{
+      if(musicOn){
+        stopMusic();
+        btn.textContent = "▶️ Play";
+      }else{
+        startMusic();
+        btn.textContent = "⏸️ Pauză";
+      }
+    });
+
+    // Volume slider note:
+    // YouTube iframe volume can't be changed without full API.
+    // We'll simulate by suggesting user uses phone volume.
+    const vol = document.getElementById("vol");
+    vol.addEventListener("input", ()=>{
+      // keep UI responsive; real volume = phone volume
+    });
+  });
+
+  // gentle background sparkle
+  setInterval(()=>sprinkle(3), 2400);
+</script>
 </body>
 </html>
